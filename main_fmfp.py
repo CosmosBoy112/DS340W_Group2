@@ -15,7 +15,10 @@ import csv
 import math
 import pandas as pd
 import numpy as np
-import resource
+try:
+    import resource
+except ImportError:
+    resource = None
 from collections import OrderedDict
 
 from model import resnet
