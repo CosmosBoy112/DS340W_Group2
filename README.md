@@ -21,6 +21,33 @@ python main_base.py
 ```
 python main_fmfp.py
 ```
+### DS340W extension: failure prediction under corruption severity
+
+Adds a post-hoc Risk Advisor meta-model and evaluates both it and plain MSP
+across CIFAR-10-C severity levels, to see whether a confidence estimator stays
+reliable as the input distribution moves away from training.
+
+Download CIFAR-10-C (2.9GB) from <https://zenodo.org/records/2535967> and
+unpack it so that `./data/CIFAR-10-C/` holds `labels.npy` and the 15 corruption
+`.npy` files.
+
+```
+python eval_shift.py --ckpt ./output/cifar10_resnet18_baseline/model.pth --tag baseline
+python eval_shift.py --ckpt ./output_flat/cifar10_resnet18_fmfp/model.pth  --tag fmfp
+python plot_shift.py
+```
+
+Both runs append to `./output_shift/results.csv`; `plot_shift.py` reads it and
+writes `auroc_vs_severity.png`. Pass `--metric aurc` (or `eaurc`, `fpr95`,
+`acc`) to plot a different column. `--corruptions gaussian_noise fog` limits the
+sweep to a subset while testing.
+
+New files:
+* `risk_advisor.py` — gradient-boosted meta-model, fit on validation logits
+* `utils/cifar10c.py` — CIFAR-10-C loader, one severity at a time
+* `utils/fp_metrics.py` — AUROC / AURC / E-AURC / FPR95 for any confidence score
+* `eval_shift.py`, `plot_shift.py` — sweep and figure
+
 ### Useful links
 A list of papers that studies out-of-distribution (OOD) detection and misclassification detection (MisD)
 * <https://github.com/Impression2805/Awesome-Failure-Detection>
