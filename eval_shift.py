@@ -7,9 +7,9 @@ import torch
 
 from model import resnet, resnet18, densenet_BC, vgg, mobilenet, efficientnet, wrn, convmixer
 from risk_advisor import RiskAdvisor
-from utils import cifar10c
+import cifar10c
 from utils import data as dataset
-from utils.fp_metrics import evaluate, msp
+from fp_metrics import evaluate, msp
 
 FIELDS = ['tag', 'severity', 'scorer', 'acc', 'auroc', 'aupr_err', 'aurc', 'eaurc', 'fpr95']
 
